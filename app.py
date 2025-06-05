@@ -30,7 +30,7 @@ logging.basicConfig(filename='demand_forecast.log', level=logging.ERROR)
 
 # Configuração da página
 st.set_page_config(
-    page_title="Sistema Avançado de Previsão de Demanda - Padaria Master",
+    page_title="Sistema Avançado de Previsão de Demanda ",
     page_icon="🍞",
     layout="wide",
     initial_sidebar_state="expanded"
