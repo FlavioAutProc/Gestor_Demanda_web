@@ -866,23 +866,37 @@ def show_analysis_tab(system):
     filtered_data = system.data[
         (system.data['Data'] >= pd.to_datetime(start_date)) &
         (system.data['Data'] <= pd.to_datetime(end_date))
-        ]
+    ]
 
     if filtered_data.empty:
         st.warning("Nenhum dado no período selecionado")
         return
 
+    # Verifica se a coluna 'Produto' existe
+    show_product = 'Produto' in filtered_data.columns
+
     # Tabs para diferentes análises
     tab1, tab2, tab3 = st.tabs(["Série Temporal", "Análise de Sazonalidade", "Distribuição"])
 
     with tab1:
-        fig = px.line(
-            filtered_data,
-            x='Data',
-            y='Unidades Vendidas',
-            title='Série Temporal de Vendas',
-            labels={'Unidades Vendidas': 'Unidades Vendidas', 'Data': 'Data'}
-        )
+        # Se existir coluna 'Produto', agrupar por produto
+        if show_product:
+            fig = px.line(
+                filtered_data,
+                x='Data',
+                y='Unidades Vendidas',
+                color='Produto',
+                title='Série Temporal de Vendas por Produto',
+                labels={'Unidades Vendidas': 'Unidades Vendidas', 'Data': 'Data'}
+            )
+        else:
+            fig = px.line(
+                filtered_data,
+                x='Data',
+                y='Unidades Vendidas',
+                title='Série Temporal de Vendas',
+                labels={'Unidades Vendidas': 'Unidades Vendidas', 'Data': 'Data'}
+            )
         fig.update_xaxes(rangeslider_visible=True)
         st.plotly_chart(fig, use_container_width=True)
 
@@ -892,32 +906,51 @@ def show_analysis_tab(system):
                 st.subheader("Decomposição Sazonal")
                 decomposition_fig = make_subplots(rows=4, cols=1, shared_xaxes=True)
 
+                # Converter valores numpy.float64 para float padrão
+                y_values = filtered_data['Unidades Vendidas'].astype(float).values
+
                 # Adiciona série original
                 decomposition_fig.add_trace(
-                    go.Scatter(x=filtered_data['Data'], y=filtered_data['Unidades Vendidas'], name='Observado'),
+                    go.Scatter(
+                        x=filtered_data['Data'],
+                        y=y_values,
+                        name='Observado'
+                    ),
                     row=1, col=1
                 )
 
                 # Adiciona tendência, sazonalidade e resíduos (simplificado)
-                rolling_mean = filtered_data['Unidades Vendidas'].rolling(window=7).mean()
+                rolling_mean = filtered_data['Unidades Vendidas'].rolling(window=7).mean().astype(float).values
                 decomposition_fig.add_trace(
-                    go.Scatter(x=filtered_data['Data'], y=rolling_mean, name='Tendência'),
+                    go.Scatter(
+                        x=filtered_data['Data'],
+                        y=rolling_mean,
+                        name='Tendência'
+                    ),
                     row=2, col=1
                 )
 
                 # Sazonalidade (simplificada)
                 filtered_data['DiaSemana'] = filtered_data['Data'].dt.dayofweek
                 seasonal = filtered_data.groupby('DiaSemana')['Unidades Vendidas'].mean()
-                seasonal_component = filtered_data['DiaSemana'].map(seasonal)
+                seasonal_component = filtered_data['DiaSemana'].map(seasonal).astype(float).values
                 decomposition_fig.add_trace(
-                    go.Scatter(x=filtered_data['Data'], y=seasonal_component, name='Sazonalidade'),
+                    go.Scatter(
+                        x=filtered_data['Data'],
+                        y=seasonal_component,
+                        name='Sazonalidade'
+                    ),
                     row=3, col=1
                 )
 
                 # Resíduos
-                residuals = filtered_data['Unidades Vendidas'] - rolling_mean - seasonal_component
+                residuals = (filtered_data['Unidades Vendidas'] - rolling_mean - seasonal_component).astype(float).values
                 decomposition_fig.add_trace(
-                    go.Scatter(x=filtered_data['Data'], y=residuals, name='Resíduo'),
+                    go.Scatter(
+                        x=filtered_data['Data'],
+                        y=residuals,
+                        name='Resíduo'
+                    ),
                     row=4, col=1
                 )
 
@@ -934,52 +967,100 @@ def show_analysis_tab(system):
 
         with col1:
             st.subheader("Por Dia da Semana")
-            fig = px.box(
-                filtered_data,
-                x='DiaSemana',
-                y='Unidades Vendidas',
-                title='Distribuição por Dia da Semana'
-            )
+            if show_product:
+                fig = px.box(
+                    filtered_data,
+                    x='DiaSemana',
+                    y='Unidades Vendidas',
+                    color='Produto',
+                    title='Distribuição por Dia da Semana e Produto'
+                )
+            else:
+                fig = px.box(
+                    filtered_data,
+                    x='DiaSemana',
+                    y='Unidades Vendidas',
+                    title='Distribuição por Dia da Semana'
+                )
             st.plotly_chart(fig, use_container_width=True)
 
         with col2:
             st.subheader("Média por Dia da Semana")
-            mean_by_day = filtered_data.groupby('DiaSemana')['Unidades Vendidas'].mean().reset_index()
-            fig = px.bar(
-                mean_by_day,
-                x='DiaSemana',
-                y='Unidades Vendidas',
-                title='Média de Vendas por Dia da Semana'
-            )
+            if show_product:
+                mean_by_day = filtered_data.groupby(['DiaSemana', 'Produto'])['Unidades Vendidas'].mean().reset_index()
+                fig = px.bar(
+                    mean_by_day,
+                    x='DiaSemana',
+                    y='Unidades Vendidas',
+                    color='Produto',
+                    barmode='group',
+                    title='Média de Vendas por Dia da Semana e Produto'
+                )
+            else:
+                mean_by_day = filtered_data.groupby('DiaSemana')['Unidades Vendidas'].mean().reset_index()
+                fig = px.bar(
+                    mean_by_day,
+                    x='DiaSemana',
+                    y='Unidades Vendidas',
+                    title='Média de Vendas por Dia da Semana'
+                )
             st.plotly_chart(fig, use_container_width=True)
 
         if len(filtered_data) > 60:  # Só mostra análise mensal se tiver dados suficientes
             st.subheader("Padrão Mensal")
-            monthly_data = filtered_data.groupby('Mes')['Unidades Vendidas'].mean().reset_index()
-            fig = px.line(
-                monthly_data,
-                x='Mes',
-                y='Unidades Vendidas',
-                title='Média de Vendas por Mês'
-            )
+            if show_product:
+                monthly_data = filtered_data.groupby(['Mes', 'Produto'])['Unidades Vendidas'].mean().reset_index()
+                fig = px.line(
+                    monthly_data,
+                    x='Mes',
+                    y='Unidades Vendidas',
+                    color='Produto',
+                    title='Média de Vendas por Mês e Produto'
+                )
+            else:
+                monthly_data = filtered_data.groupby('Mes')['Unidades Vendidas'].mean().reset_index()
+                fig = px.line(
+                    monthly_data,
+                    x='Mes',
+                    y='Unidades Vendidas',
+                    title='Média de Vendas por Mês'
+                )
             st.plotly_chart(fig, use_container_width=True)
 
     with tab3:
+        st.subheader("Visualização dos Dados")
+        # Mostra a tabela com o produto se existir
+        if show_product:
+            st.dataframe(filtered_data[['Data', 'Produto', 'Unidades Vendidas']], use_container_width=True)
+        else:
+            st.dataframe(filtered_data[['Data', 'Unidades Vendidas']], use_container_width=True)
+
         col1, col2 = st.columns(2)
 
         with col1:
             st.subheader("Histograma")
-            fig = px.histogram(
-                filtered_data,
-                x='Unidades Vendidas',
-                nbins=30,
-                title='Distribuição das Vendas Diárias'
-            )
+            if show_product:
+                fig = px.histogram(
+                    filtered_data,
+                    x='Unidades Vendidas',
+                    color='Produto',
+                    nbins=30,
+                    title='Distribuição das Vendas Diárias por Produto',
+                    marginal="rug"
+                )
+            else:
+                fig = px.histogram(
+                    filtered_data,
+                    x='Unidades Vendidas',
+                    nbins=30,
+                    title='Distribuição das Vendas Diárias'
+                )
             st.plotly_chart(fig, use_container_width=True)
 
         with col2:
             st.subheader("QQ-Plot")
-            qq_data = stats.probplot(filtered_data['Unidades Vendidas'], dist="norm")
+            # Converter valores para float antes do QQ-plot
+            qq_data = stats.probplot(filtered_data['Unidades Vendidas'].astype(float), dist="norm")
             fig = go.Figure()
             fig.add_trace(go.Scatter(
                 x=qq_data[0][0],
@@ -999,8 +1080,7 @@ def show_analysis_tab(system):
                 yaxis_title='Quantis Amostrais'
             )
             st.plotly_chart(fig, use_container_width=True)
-
-
+            
 def show_forecast_tab(system):
     """Exibe a aba de previsão de demanda"""
     st.header("🔮 Previsão de Demanda")

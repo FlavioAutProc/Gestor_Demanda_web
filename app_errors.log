@@ -1,0 +1,3 @@
+ERROR:root:Import error: cannot reindex on an axis with duplicate labels
+ERROR:root:Import error: cannot reindex on an axis with duplicate labels
+ERROR:root:PDF export error: 'bytearray' object has no attribute 'encode'
