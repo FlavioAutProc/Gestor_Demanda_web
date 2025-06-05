@@ -1529,7 +1529,7 @@ def show_settings_tab(system):
 
     st.subheader("Sobre o Sistema")
     st.write("""
-        **Sistema Avançado de Previsão de Demanda - Padaria Master**  
+        **Sistema Avançado de Previsão de Demanda**  
         Versão 3.0  
         Desenvolvido com Streamlit, Plotly e Scikit-learn  
         © 2023 - Todos os direitos reservados
