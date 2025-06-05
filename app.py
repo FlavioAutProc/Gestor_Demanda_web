@@ -742,7 +742,7 @@ class AdvancedDemandForecastSystem:
 
 # Criação da interface
 def main():
-    st.title("🍞 Sistema Avançado de Previsão de Demanda - Padaria Master")
+    st.title("🍞 Sistema Avançado de Previsão de Demanda")
 
     # Inicializa o sistema
     system = AdvancedDemandForecastSystem()
