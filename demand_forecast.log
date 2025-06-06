@@ -1,0 +1,1 @@
+ERROR:root:Erro ao gerar PDF: 'bytearray' object has no attribute 'encode'

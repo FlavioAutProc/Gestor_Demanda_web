@@ -1,3 +1,80 @@
 ERROR:root:Import error: cannot reindex on an axis with duplicate labels
 ERROR:root:Import error: cannot reindex on an axis with duplicate labels
 ERROR:root:PDF export error: 'bytearray' object has no attribute 'encode'
+2025-06-05 21:19:07,034 - ERROR - Import error: cannot reindex on an axis with duplicate labels
+Traceback (most recent call last):
+  File "C:\Users\Flávio Monteiro\Documents\repositorio_para_projetos\Gestor_Demanda_web\teste2.py", line 205, in import_data
+    new_data = self.handle_missing_dates(new_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Flávio Monteiro\Documents\repositorio_para_projetos\Gestor_Demanda_web\teste2.py", line 260, in handle_missing_dates
+    group = group.set_index('Data').reindex(date_range)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\01_Profissional\Projetos_Praticos\PROJETOS-PADARIA\PROJETOS_GESTOR_DE_DEMANDAS\gestor_demanda_2.0\.venv\Lib\site-packages\pandas\core\frame.py", line 5385, in reindex
+    return super().reindex(
+           ^^^^^^^^^^^^^^^^
+  File "F:\01_Profissional\Projetos_Praticos\PROJETOS-PADARIA\PROJETOS_GESTOR_DE_DEMANDAS\gestor_demanda_2.0\.venv\Lib\site-packages\pandas\core\generic.py", line 5629, in reindex
+    return self._reindex_axes(
+           ^^^^^^^^^^^^^^^^^^^
+  File "F:\01_Profissional\Projetos_Praticos\PROJETOS-PADARIA\PROJETOS_GESTOR_DE_DEMANDAS\gestor_demanda_2.0\.venv\Lib\site-packages\pandas\core\generic.py", line 5652, in _reindex_axes
+    new_index, indexer = ax.reindex(
+                         ^^^^^^^^^^^
+  File "F:\01_Profissional\Projetos_Praticos\PROJETOS-PADARIA\PROJETOS_GESTOR_DE_DEMANDAS\gestor_demanda_2.0\.venv\Lib\site-packages\pandas\core\indexes\base.py", line 4436, in reindex
+    raise ValueError("cannot reindex on an axis with duplicate labels")
+ValueError: cannot reindex on an axis with duplicate labels
+ERROR:root:Import error: cannot reindex on an axis with duplicate labels
+ERROR:root:Forecast error: True
+ERROR:root:Forecast error: True
+ERROR:root:Import error: time data "13/01/2023" doesn't match format "%m/%d/%Y", at position 12. You might want to try:
+    - passing `format` if your strings have a consistent format;
+    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;
+    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to use `dayfirst` alongside this.
+ERROR:root:Import error: time data "13/01/2023" doesn't match format "%m/%d/%Y", at position 12. You might want to try:
+    - passing `format` if your strings have a consistent format;
+    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;
+    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to use `dayfirst` alongside this.
+ERROR:root:Import error: time data "13/01/2023" doesn't match format "%m/%d/%Y", at position 12. You might want to try:
+    - passing `format` if your strings have a consistent format;
+    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;
+    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to use `dayfirst` alongside this.
+ERROR:root:Import error: time data "13/01/2023" doesn't match format "%m/%d/%Y", at position 12. You might want to try:
+    - passing `format` if your strings have a consistent format;
+    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;
+    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to use `dayfirst` alongside this.
+ERROR:root:Import error: cannot reindex on an axis with duplicate labels
+ERROR:root:Import error: cannot reindex on an axis with duplicate labels
+ERROR:root:Import error: time data "13/01/2023" doesn't match format "%m/%d/%Y", at position 12. You might want to try:
+    - passing `format` if your strings have a consistent format;
+    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;
+    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to use `dayfirst` alongside this.
+ERROR:root:Import error: time data "13/01/2023" doesn't match format "%m/%d/%Y", at position 12. You might want to try:
+    - passing `format` if your strings have a consistent format;
+    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;
+    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to use `dayfirst` alongside this.
+ERROR:root:Forecast error: True
+ERROR:root:Forecast error: True
+ERROR:root:Forecast error: True
+ERROR:root:Forecast error: True
+ERROR:root:Forecast error: True
+ERROR:root:Import error: time data "13/01/2023" doesn't match format "%m/%d/%Y", at position 12. You might want to try:
+    - passing `format` if your strings have a consistent format;
+    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;
+    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to use `dayfirst` alongside this.
+ERROR:root:Import error: time data "13/01/2023" doesn't match format "%m/%d/%Y", at position 12. You might want to try:
+    - passing `format` if your strings have a consistent format;
+    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;
+    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to use `dayfirst` alongside this.
+ERROR:root:Import error: cannot reindex on an axis with duplicate labels
+ERROR:root:Import error: cannot reindex on an axis with duplicate labels
+ERROR:root:Import error: time data "13/01/2023" doesn't match format "%m/%d/%Y", at position 12. You might want to try:
+    - passing `format` if your strings have a consistent format;
+    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;
+    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to use `dayfirst` alongside this.
+ERROR:root:Import error: time data "13/01/2023" doesn't match format "%m/%d/%Y", at position 12. You might want to try:
+    - passing `format` if your strings have a consistent format;
+    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;
+    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to use `dayfirst` alongside this.
+ERROR:root:Forecast error: True
+ERROR:root:Import error: time data "13/01/2023" doesn't match format "%m/%d/%Y", at position 12. You might want to try:
+    - passing `format` if your strings have a consistent format;
+    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;
+    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to use `dayfirst` alongside this.
